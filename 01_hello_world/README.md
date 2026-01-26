@@ -7,7 +7,7 @@ This script prints a greeting message to verify that Python is working.
 
 
 ## Usage
-bash
+```bash
 python3 hello.py
 
 ## Output
@@ -15,5 +15,6 @@ python3 hello.py
 Hello, world!
 This is my first python script 🚀
 
+```
 ## Purpose
 This script is part of a Python scripting learning project and serves as the first example.
