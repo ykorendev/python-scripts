@@ -14,6 +14,6 @@ python3 organize_files.py <folder_path>
 python3 organize_files.py Downloads
 ```
 ## Notes
-Only moves files, not subfolders
-Creats folders automatically for each file type
-Handles invalid folder gracefully
+Only moves files, not subfolders  
+Creates folders automatically for each file type  
+Handles invalid folder gracefully  
