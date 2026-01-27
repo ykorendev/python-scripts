@@ -9,9 +9,9 @@ This script prints a greeting message to verify that Python is working.
 ## Usage
 ```bash
 python3 hello.py
-
-## Output
-
+```
+**Output:**
+```bash
 Hello, world!
 This is my first python script 🚀
 
