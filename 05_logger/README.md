@@ -12,7 +12,7 @@ python3 logger.py "your log"
 
 **Output:**
 ```bash
-2026-01-27 19:42:10 - your log
+2026-01-27 19:42:10  your log
 ```
 
 ## Environment Variables
