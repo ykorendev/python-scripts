@@ -3,7 +3,7 @@
 # Logger with timestamps Script
 
 ## Description
-Creats a logs directory and appends a message to run.log including timestamps.
+Creates a logs directory and appends a message to run.log including timestamps.
 
 ## Usage
 ```bash

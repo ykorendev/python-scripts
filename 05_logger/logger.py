@@ -3,7 +3,7 @@
 #!/usr/bin/env python3
 
 """
-logger_with_time.py
+logger.py
 
 Creates a directory called logs and appends a line to run.log file including timestamps
 """
@@ -20,7 +20,8 @@ def main():
     log = " ".join(sys.argv[1:])
 
     base_dir = os.path.dirname(__file__)
-    logs_dir = os.path.join(base_dir, "logs")
+    logs_dir_name = os.environ.get("LOG_DIR","logs")
+    logs_dir = os.path.join(base_dir, logs_dir_name)
 
     os.makedirs(logs_dir, exist_ok= True)
 
