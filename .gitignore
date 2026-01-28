@@ -1,3 +1,5 @@
 temp
 05_logger/logs
 05_logger/my_logs
+07_syslogger/logs
+07_syslogger/my_logs
