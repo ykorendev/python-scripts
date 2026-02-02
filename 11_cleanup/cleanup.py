@@ -12,7 +12,23 @@ Supports dry-run, deletion and optional logging.
 import os
 import time
 import argparse
+import configparser
 from datetime import datetime
+
+
+
+# ------- Config helper ---------
+def load_config(config_path):
+    config = configparser.ConfigParser()
+
+    if not os.path.exists(config_path):
+        return {}
+
+    config.read(config_path)
+
+    if "cleanup" not in config:
+        return {}
+    return config["cleanup"]
 
 # ------- Logging helper --------
 def log_message(message, enabled):
@@ -31,15 +47,29 @@ def log_message(message, enabled):
 
 # --------- Main Logic -----------
 def main():
+
+    base_dir = os.path.dirname(__file__)
+    default_config_path = os.path.join(base_dir, "cleanup.ini")
+
+    # Hard-coded defaults
+    DEFAULT_DAYS = 7
+    DEFAULT_LOG = False
+
+    # Load config values (if file exists)
+    config = load_config(default_config_path)
+
+    config_days = int(config.get("days", DEFAULT_DAYS))
+    config_log = config.get("log", "false").lower() == "true"
+
     parser = argparse.ArgumentParser(description="Cleanup old files")
     parser.add_argument("directory", help="Target directory to clean")
-    parser.add_argument("--days", type=int, default=7, help="Files oldar than this will be affected")
+    parser.add_argument("--days", type=int, default=config_days, help="Files older than this will be affected")
     parser.add_argument("--delete", action="store_true", help="Actually delete files")
-    parser.add_argument("--log", action="store_true", help="Enable logging")
+    parser.add_argument("--log", action="store_true", default=config_log, help="Enable logging")
 
     args = parser.parse_args()
 
-    target_dir= os.path.abspath(args.directory)
+    target_dir = os.path.abspath(args.directory)
     cutoff_time = time.time() - (args.days * 86400)
 
     for root, dirs, files in os.walk(target_dir):
