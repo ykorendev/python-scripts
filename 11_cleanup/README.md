@@ -31,8 +31,10 @@ python cleanup.py DIRECTORY [options]
 | `--days N` | Files older than N days (default: 7)      |
 | `--delete` | Actually delete files (otherwise dry-run) |
 | `--log`    | Write actions to a log file               |
+| `--config FILE` | Path to configuration file (optional) |
 
-Command-line options override config file values.
+You may override the default config file location using `--config`.
+Command-line options override config file values when explicitly provided.
 
 ## Configuration File (cleanup.ini)
 You may define default behavior using a `cleanup.ini` file placed **next to the script**
@@ -66,6 +68,11 @@ python3 cleanup.py /tmp --days 14 --delete
 Delete and log actions:
 ```bash
 python3 cleanup.py /tmp --delete --log
+```
+
+Override default config file
+```bash
+python cleanup.py /tmp --config /path/to/cleanup.ini
 ```
 
 **Logging**
