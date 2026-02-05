@@ -4,3 +4,4 @@ temp
 07_syslogger/logs
 07_syslogger/my_logs
 11_cleanup/logs
+11_cleanup/cleanconfig.ini

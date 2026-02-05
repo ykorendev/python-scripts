@@ -4,13 +4,15 @@
 
 ## Description
 A Python utility that finds files older than a specified number of days and optionally removes them.
-The script is **safe by default** and supports configuration via command-line arguments or a config file.
+The script is **safe by default** and supports configuration via command-line arguments or an optional config file.
+Command-line options take precedence over configuration values.
 
 ## Features
 - Safe **dry-run mode** by default
 - Optional **file deletion** with `--delete`
 - Optional **logging** with `--log`
-- Configurable defaults via `cleanup.ini`
+- Ability to explicitly disable logging with `--no-log`
+- Configurable defaults via a config file
 - Automatically creates log directory and file when logging is enabled
 - Safe handling of permission errors
 - Works from any directory
@@ -31,15 +33,19 @@ python cleanup.py DIRECTORY [options]
 | `--days N` | Files older than N days (default: 7)      |
 | `--delete` | Actually delete files (otherwise dry-run) |
 | `--log`    | Write actions to a log file               |
+| `--no-log` | Disable logging (overrides config)|
 | `--config FILE` | Path to configuration file (optional) |
 
-You may override the default config file location using `--config`.
+`--log` and `--no-log` are mutually exclusive..
 Command-line options override config file values when explicitly provided.
 
-## Configuration File (cleanup.ini)
-You may define default behavior using a `cleanup.ini` file placed **next to the script**
 
-Example:
+## Configuration File 
+By default, the script looks for a file named `cleanup.ini` **next to the script**.
+
+You may override this location using `--config`.
+
+Example `cleanup.ini`:
 ```bash
 [cleanup]
 days = 14
@@ -52,7 +58,14 @@ log = true
 | `days` | Default age threshold (in days)   |
 | `log`  | Enable logging (`true` / `false`) |
 
-If the config file does not exist, built-in defaults are used.
+If the config file does not exist or the `[cleanup]` section is missing, built-in defaults are used.
+
+## Configuration Precedence
+From lowest to highest priority:
+
+1. Built-in defaults
+2. Values from config file
+3. Explicit command-line flags
 
 ## Examples
 Dry-run (no deletion):
@@ -65,12 +78,16 @@ Delete files older than 14 days:
 python3 cleanup.py /tmp --days 14 --delete 
 ```
 
-Delete and log actions:
+Enable logging explicitly:
 ```bash
-python3 cleanup.py /tmp --delete --log
+python3 cleanup.py /tmp --log
+```
+Disable logging even if enabled in config:
+```bash
+python cleanup.py /tmp --no-log
 ```
 
-Override default config file
+Use a custom config file:
 ```bash
 python cleanup.py /tmp --config /path/to/cleanup.ini
 ```

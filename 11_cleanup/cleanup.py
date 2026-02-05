@@ -56,27 +56,38 @@ def main():
 
    
     # ------- Argument parsing (phase 1: config selection) --------
-    parser = argparse.ArgumentParser(description="Cleanup old files")
-    parser.add_argument("directory", help="Target directory to clean")
-    parser.add_argument("--config", help="Path to config file", default=default_config_path)
+    config_parser = argparse.ArgumentParser(add_help=False)
+    config_parser.add_argument("--config", default=default_config_path)
 
     # Temporary parse to know which config file to load
-    args, remaining_args = parser.parse_known_args()
+    config_args, remaining_args = config_parser.parse_known_args()
 
     # ---------- Load config -------------
-    config = load_config(args.config)
+    config = load_config(config_args.config)
       
     config_days = int(config.get("days", DEFAULT_DAYS))
     config_log = config.get("log", str(DEFAULT_LOG)).lower() == "true"
 
     # ----------- Argument parsing (phase 2: real options)----------
+    parser = argparse.ArgumentParser(description="Cleanup old files")
+    parser.add_argument("directory", help="Target directory to clean")
+    parser.add_argument("--config", help="Path to config file", default=default_config_path)
     parser.add_argument("--days", type=int, default=config_days, help="Files older than this will be affected")
     parser.add_argument("--delete", action="store_true", help="Actually delete files")
-    parser.add_argument("--log", action="store_true", default=config_log, help="Enable logging")
+
+    log_group = parser.add_mutually_exclusive_group()
+    log_group.add_argument("--log", action="store_true", help="Enable logging")
+    log_group.add_argument("--no-log", action="store_true",  help="Disable logging")
    
 
     args = parser.parse_args()
 
+    if args.log:
+        args.log =True
+    elif args.no_log:
+        args.log = False
+    else:
+        args.log = config_log
    
 
     target_dir = os.path.abspath(args.directory)
